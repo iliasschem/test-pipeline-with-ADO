@@ -7,7 +7,6 @@ pr:
 variables:
   NodeVersion: '20.x'
 
-
 stages:
 - stage: Main
   displayName: Main CI
