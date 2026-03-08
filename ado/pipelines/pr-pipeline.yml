@@ -1,10 +1,9 @@
-trigger:
+trigger: none
+
+pr:
   branches:
     include:
       - main
-
-pr: none
-
 variables:
   NodeVersion: '20.x'
 
