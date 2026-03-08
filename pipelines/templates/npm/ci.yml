@@ -1,0 +1,5 @@
+steps:
+- bash: |
+    set -euo pipefail
+    npm ci
+  displayName: npm ci

@@ -1,0 +1,10 @@
+parameters:
+  registry: 'https://registry.npmjs.org/'
+
+steps:
+- bash: |
+    set -euo pipefail
+    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+    npm config set registry "${{ parameters.registry }}"
+    npm publish --access public
+  displayName: npm publish

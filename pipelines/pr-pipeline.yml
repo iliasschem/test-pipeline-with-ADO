@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr: none
+
+variables:
+  NodeVersion: '20.x'
+
+stages:
+- stage: Main
+  displayName: Main CI
+  jobs:
+  - job: BuildAndTest
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: ../templates/node/install.yml
+      parameters:
+        nodeVersion: $(NodeVersion)
+
+    - template: ../templates/npm/ci.yml
+    - template: ../templates/npm/test.yml
+    - template: ../templates/npm/build.yml

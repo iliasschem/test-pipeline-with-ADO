@@ -1,0 +1,5 @@
+steps:
+- bash: |
+    set -euo pipefail
+    npm test
+  displayName: npm test
