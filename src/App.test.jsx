@@ -14,7 +14,6 @@ describe('App', () => {
     expect(screen.getAllByRole('button', { name: /count is 0/i })[0]).toBeInTheDocument()
   })
 
-
   it('increments count on button click', async () => {
     const user = userEvent.setup()
     render(<App />)
