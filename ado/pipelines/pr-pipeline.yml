@@ -13,7 +13,7 @@ stages:
   jobs:
   - job: BuildAndTest
     pool:
-      vmImage: Default
+      vmImage: self-hosted-linux
     steps:
     - template: ./templates/npm/install.yml
       parameters:
