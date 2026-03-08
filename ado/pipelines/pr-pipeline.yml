@@ -15,7 +15,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - template: ../templates/node/install.yml
+    - template: ../templates/npm/install.yml
       parameters:
         nodeVersion: $(NodeVersion)
 
