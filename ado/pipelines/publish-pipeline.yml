@@ -16,12 +16,12 @@ stages:
   jobs:
   - job: GateAndPublish
     pool:
-      vmImage: 'ubuntu-latest'
+      name: self-hosted-linux
     steps:
     - checkout: self
       fetchDepth: 0
 
-    - template: ../templates/node/install.yml
+    - template: ./templates/npm/install.yml
       parameters:
         nodeVersion: $(NodeVersion)
 
@@ -57,16 +57,16 @@ stages:
         echo "##vso[task.setvariable variable=ShouldPublish]true"
       displayName: Detect version bump
 
-    - template: ../templates/npm/ci.yml
+    - template: ./templates/npm/ci.yml
       condition: eq(variables['ShouldPublish'], 'true')
 
-    - template: ../templates/npm/test.yml
+    - template: ./templates/npm/test.yml
       condition: eq(variables['ShouldPublish'], 'true')
 
-    - template: ../templates/npm/build.yml
+    - template: ./templates/npm/build.yml
       condition: eq(variables['ShouldPublish'], 'true')
 
-    - template: ../templates/npm/publish.yml
+    - template: ./templates/npm/publish.yml
       parameters:
         registry: 'https://registry.npmjs.org/'
       condition: eq(variables['ShouldPublish'], 'true')

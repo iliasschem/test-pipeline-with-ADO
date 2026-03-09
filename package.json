@@ -1,8 +1,23 @@
 {
   "name": "test_github",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.1",
   "type": "module",
+  "description": "A React application",
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iliasschem/test-pipeline-with-ADO"
+  },
+  "bugs": {
+    "url": "https://github.com/iliasschem/test-pipeline-with-ADO/issues"
+  },
+  "homepage": "https://github.com/iliasschem/test-pipeline-with-ADO#readme",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
