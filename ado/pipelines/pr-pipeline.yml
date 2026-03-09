@@ -8,8 +8,8 @@ variables:
   NodeVersion: '20.x'
 
 stages:
-- stage: Main
-  displayName: Main CI
+- stage: pr
+  displayName: PR Pipeline
   jobs:
   - job: BuildAndTest
     pool:

@@ -6,13 +6,18 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-- script: npm ci
-  displayName: 'Install dependencies'
-- script: npm run build
-  displayName: 'Build project'
-- script: npm test
-  displayName: 'Run tests'
+stages:
+- stage: Main
+  displayName: Main CI
+  jobs:
+  - job: BuildAndTest
+    pool:
+      name: self-hosted-linux
+    steps:
+    - template: ./templates/npm/install.yml
+      parameters:
+        nodeVersion: $(NodeVersion)
+
+    - template: ./templates/npm/ci.yml
+    - template: ./templates/npm/test.yml
+    - template: ./templates/npm/build.yml
