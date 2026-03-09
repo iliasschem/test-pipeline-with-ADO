@@ -1,14 +1,14 @@
 {
-  "name": "test_github",
+  "name": "@iliass_chemrah/test-github-project-with-ado-pipeline",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "A React application",
   "author": "",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/iliasschem/test-pipeline-with-ADO"
+    "url": "git+https://github.com/iliasschem/test-pipeline-with-ADO.git"
   },
   "bugs": {
     "url": "https://github.com/iliasschem/test-pipeline-with-ADO/issues"

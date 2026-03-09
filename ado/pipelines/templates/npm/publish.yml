@@ -5,12 +5,11 @@ parameters:
 
 steps:
   - bash: |
-      npm set registry ${{ parameters.registry }}
-      npm set //registry.npmjs.org/:_authToken $(NPM_TOKEN)
-    displayName: 'Configure npm registry'
+      echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      npm config set registry ${{ parameters.registry }}
+    displayName: 'Configure npm authentication'
 
   - bash: |
+      npm whoami
       npm publish
     displayName: 'npm publish'
-    env:
-      NPM_TOKEN: $(NPM_TOKEN)
