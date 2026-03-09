@@ -1,10 +1,16 @@
 parameters:
-  registry: 'https://registry.npmjs.org/'
+  - name: registry
+    type: string
+    default: 'https://registry.npmjs.org/'
 
 steps:
-- bash: |
-    set -euo pipefail
-    echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-    npm config set registry "${{ parameters.registry }}"
-    npm publish --access public
-  displayName: npm publish
+  - bash: |
+      npm set registry ${{ parameters.registry }}
+      npm set //registry.npmjs.org/:_authToken $(NPM_TOKEN)
+    displayName: 'Configure npm registry'
+
+  - bash: |
+      npm publish
+    displayName: 'npm publish'
+    env:
+      NPM_TOKEN: $(NPM_TOKEN)
