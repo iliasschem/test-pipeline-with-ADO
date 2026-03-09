@@ -5,6 +5,7 @@ trigger:
 
 pr: none
 
+
 variables:
   NodeVersion: '20.x'
 
