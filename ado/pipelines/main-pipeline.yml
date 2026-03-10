@@ -24,3 +24,5 @@ stages:
     - template:  ./templates/ci.yml
     - template:  ./templates/test.yml
     - template:  ./templates/build.yml
+
+- template: ./publish-pipeline.yml

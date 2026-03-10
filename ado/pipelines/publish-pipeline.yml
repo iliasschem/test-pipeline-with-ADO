@@ -1,24 +1,26 @@
-trigger: none
+# trigger: none
 
-resources:
-  pipelines:
-    - pipeline: mainCi
-      source: main-pipeline
-      trigger:
-        branches:
-          include:
-            - main
+# resources:
+#   pipelines:
+#     - pipeline: mainCi
+#       source: main-pipeline
+#       trigger:
+#         branches:
+#           include:
+#             - main
 
-pr: none
+# pr: none
 
-variables:
-  NodeVersion: '20.x'
-  # Recommended: store NPM_TOKEN as a secret variable in a variable group or pipeline variable
-  # and map it to env.NPM_TOKEN in the publish step.
+# variables:
+#   NodeVersion: '20.x'
+#   # Recommended: store NPM_TOKEN as a secret variable in a variable group or pipeline variable
+#   # and map it to env.NPM_TOKEN in the publish step.
 
 stages:
 - stage: Publish
   displayName: Publish on version bump
+  dependsOn: Main
+  condition: succeeded()
   jobs:
   - job: DetectVersionBump
     pool:
