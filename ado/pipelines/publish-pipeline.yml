@@ -57,18 +57,17 @@ stages:
         echo "##vso[task.setvariable variable=ShouldPublish]true"
       displayName: Detect version bump
 
-    - template: ./templates/npm/ci.yml
-      condition: eq(variables['ShouldPublish'], 'true')
+    - ${{ if eq(variables['ShouldPublish'], 'true') }}:
+      - template: ./templates/npm/ci.yml
 
-    - template: ./templates/npm/test.yml
-      condition: eq(variables['ShouldPublish'], 'true')
+    - ${{ if eq(variables['ShouldPublish'], 'true') }}:
+      - template: ./templates/npm/test.yml
 
-    - template: ./templates/npm/build.yml
-      condition: eq(variables['ShouldPublish'], 'true')
+    - ${{ if eq(variables['ShouldPublish'], 'true') }}:
+      - template: ./templates/npm/build.yml
 
-    - template: ./templates/npm/publish.yml
-      parameters:
-        registry: 'https://registry.npmjs.org/'
-      condition: eq(variables['ShouldPublish'], 'true')
-      env:
-        NPM_TOKEN: $(NPM_TOKEN)
+    - ${{ if eq(variables['ShouldPublish'], 'true') }}:
+      - template: ./templates/npm/publish.yml
+        parameters:
+          registry: 'https://registry.npmjs.org/'
+          npmToken: $(NPM_TOKEN)
