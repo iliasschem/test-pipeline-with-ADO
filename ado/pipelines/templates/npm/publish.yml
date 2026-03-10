@@ -2,10 +2,12 @@ parameters:
   - name: registry
     type: string
     default: 'https://registry.npmjs.org/'
+  - name: npmToken
+    type: string
 
 steps:
   - bash: |
-      echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      echo "//registry.npmjs.org/:_authToken=${{ parameters.npmToken }}" > ~/.npmrc
       npm config set registry ${{ parameters.registry }}
     displayName: 'Configure npm authentication'
 
