@@ -15,10 +15,10 @@ stages:
     pool:
       name: self-hosted-linux
     steps:
-    - template: ./templates/npm/install.yml
+    - template:  ./templates/install.yml
       parameters:
         nodeVersion: $(NodeVersion)
 
-    - template: ./templates/npm/ci.yml
-    - template: ./templates/npm/test.yml
-    - template: ./templates/npm/build.yml
+    - template:  ./templates/ci.yml
+    - template:  ./templates/test.yml
+    - template:  ./templates/build.yml
