@@ -55,11 +55,12 @@ stages:
 
         echo "Version bump detected. Will publish."
         echo "##vso[task.setvariable variable=ShouldPublish;isOutput=true]true"
+      name: VersionCheck
       displayName: Detect version bump
 
   - job: PublishPackage
     dependsOn: DetectVersionBump
-    condition: eq(dependencies.DetectVersionBump.outputs['DetectVersionBump.ShouldPublish'], 'true')
+    condition: eq(dependencies.DetectVersionBump.outputs['VersionCheck.ShouldPublish'], 'true')
     pool:
       name: self-hosted-linux
     steps:
