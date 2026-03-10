@@ -37,7 +37,7 @@ stages:
           echo "package.json changed. Proceeding to validate version bump..."
         else
           echo "package.json did not change. Skipping publish."
-          echo "##vso[task.setvariable variable=ShouldPublish]false"
+          echo "##vso[task.setvariable variable=ShouldPublish;isOutput=true]false"
           exit 0
         fi
 
@@ -49,12 +49,12 @@ stages:
 
         if [ "$PREV" = "$CURR" ]; then
           echo "package.json changed but version did not change. Skipping publish."
-          echo "##vso[task.setvariable variable=ShouldPublish]false"
+          echo "##vso[task.setvariable variable=ShouldPublish;isOutput=true]false"
           exit 0
         fi
 
         echo "Version bump detected. Will publish."
-        echo "##vso[task.setvariable variable=ShouldPublish]true"
+        echo "##vso[task.setvariable variable=ShouldPublish;isOutput=true]true"
       displayName: Detect version bump
 
   - job: PublishPackage
