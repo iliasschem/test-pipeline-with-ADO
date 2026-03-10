@@ -14,7 +14,7 @@ stages:
 - stage: Publish
   displayName: Publish on version bump
   jobs:
-  - job: GateAndPublish
+  - job: DetectVersionBump
     pool:
       name: self-hosted-linux
     steps:
@@ -57,17 +57,26 @@ stages:
         echo "##vso[task.setvariable variable=ShouldPublish]true"
       displayName: Detect version bump
 
-    - ${{ if eq(variables['ShouldPublish'], 'true') }}:
-      - template: ./templates/npm/ci.yml
+  - job: PublishPackage
+    dependsOn: DetectVersionBump
+    condition: eq(dependencies.DetectVersionBump.outputs['DetectVersionBump.ShouldPublish'], 'true')
+    pool:
+      name: self-hosted-linux
+    steps:
+    - checkout: self
+      fetchDepth: 0
 
-    - ${{ if eq(variables['ShouldPublish'], 'true') }}:
-      - template: ./templates/npm/test.yml
+    - template: ./templates/npm/install.yml
+      parameters:
+        nodeVersion: $(NodeVersion)
 
-    - ${{ if eq(variables['ShouldPublish'], 'true') }}:
-      - template: ./templates/npm/build.yml
+    - template: ./templates/npm/ci.yml
 
-    - ${{ if eq(variables['ShouldPublish'], 'true') }}:
-      - template: ./templates/npm/publish.yml
-        parameters:
-          registry: 'https://registry.npmjs.org/'
-          npmToken: $(NPM_TOKEN)
+    - template: ./templates/npm/test.yml
+
+    - template: ./templates/npm/build.yml
+
+    - template: ./templates/npm/publish.yml
+      parameters:
+        registry: 'https://registry.npmjs.org/'
+        npmToken: $(NPM_TOKEN)
