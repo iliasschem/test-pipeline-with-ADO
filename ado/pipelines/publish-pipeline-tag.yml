@@ -1,0 +1,79 @@
+trigger: none  # disables CI on branch commits
+
+pr: none       # disables PR triggers
+
+# Trigger pipeline only on tags
+resources:
+  repositories:
+    - repository: self
+      type: git
+      trigger:
+        tags:
+          include:
+            - '*'   # triggers on all tags
+
+stages:
+- stage: Publish
+  displayName: Publish on version bump
+  dependsOn: Main
+  condition: succeeded()
+  jobs:
+  - job: DetectVersionBump
+    pool:
+      name: self-hosted-linux
+    steps:
+    - checkout: self
+      fetchDepth: 0
+
+    - template:  ./templates/install.yml
+      parameters:
+        nodeVersion: $(NodeVersion)
+
+    - bash: |
+        set -euo pipefail
+        echo "Checking tag-based publish conditions..."
+
+        TAG_NAME="$(Build.SourceBranchName)"
+        PACKAGE_NAME="$(node -p \"require('./package.json').name\")"
+        VERSION="$(node -p \"require('./package.json').version\")"
+
+        echo "Tag pushed: $TAG_NAME"
+        echo "Package: $PACKAGE_NAME"
+        echo "Version: $VERSION"
+
+        PUBLISHED="$(npm view \"$PACKAGE_NAME@$VERSION\" version 2>/dev/null || echo 'not published')"
+
+        if [ "$PUBLISHED" = "$VERSION" ]; then
+          echo "Version already exists in npm. Skipping publish."
+          echo "##vso[task.setvariable variable=ShouldPublish;isOutput=true]false"
+          exit 0
+        fi
+
+        echo "Tag-based publish check passed. Will publish."
+        echo "##vso[task.setvariable variable=ShouldPublish;isOutput=true]true"
+      name: VersionCheck
+      displayName: Detect version bump
+
+  - job: PublishPackage
+    dependsOn: DetectVersionBump
+    condition: eq(dependencies.DetectVersionBump.outputs['VersionCheck.ShouldPublish'], 'true')
+    pool:
+      name: self-hosted-linux
+    steps:
+    - checkout: self
+      fetchDepth: 0
+
+    - template:  ./templates/install.yml
+      parameters:
+        nodeVersion: $(NodeVersion)
+
+    - template:  ./templates/ci.yml
+
+    - template:  ./templates/test.yml
+
+    - template:  ./templates/build.yml
+
+    - template:  ./templates/publish.yml
+      parameters:
+        registry: 'https://registry.npmjs.org/'
+        npmToken: $(NPM_TOKEN)
