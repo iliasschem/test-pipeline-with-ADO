@@ -25,4 +25,5 @@ stages:
     - template:  ./templates/test.yml
     - template:  ./templates/build.yml
 
-- template: ./publish-pipeline.yml
+# publish when version change
+# - template: ./publish-pipeline.yml
