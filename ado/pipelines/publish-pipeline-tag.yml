@@ -12,11 +12,12 @@ resources:
           include:
             - '*'   # triggers on all tags
 
+variables:
+  NodeVersion: '20.x'
+
 stages:
 - stage: Publish
   displayName: Publish on version bump
-  dependsOn: Main
-  condition: succeeded()
   jobs:
   - job: DetectVersionBump
     pool:
